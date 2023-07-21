@@ -1,0 +1,253 @@
+run:
+  timeout: 5m
+  skip-dirs:
+    - mocks
+
+output:
+  sort-results: true
+
+linters-settings:
+  bidichk:
+    left-to-right-embedding: true
+    right-to-left-embedding: true
+    pop-directional-formatting: true
+    left-to-right-override: true
+    right-to-left-override: true
+    left-to-right-isolate: true
+    right-to-left-isolate: true
+    first-strong-isolate: true
+    pop-directional-isolate: true
+
+  cyclop:
+    max-complexity: 25
+    package-average: 0.0
+    skip-tests: true
+
+  errcheck:
+    check-type-assertions: true
+
+    check-blank: true
+
+    ignore: fmt:.*,io/ioutil:^Read.*
+
+
+    exclude-functions:
+      - io/ioutil.ReadFile
+      - io.Copy(*bytes.Buffer)
+      - io.Copy(os.Stdout)
+
+  gocognit:
+    min-complexity: 55
+
+  errorlint:
+    errorf: true
+    asserts: true
+    comparison: true
+
+  exhaustive:
+    check-generated: false
+    default-signifies-exhaustive: false
+    ignore-enum-members: ""
+    package-scope-only: false
+
+  gocritic:
+    go: "1.20"
+    enabled-checks:
+      - truncateCmp
+      - boolExprSimplify
+      - dupImport
+      - nestingReduce
+      - tooManyResultsChecker
+      - equalFold
+
+    disabled-checks:
+      - regexpMust
+
+    enabled-tags:
+      - performance
+    disabled-tags:
+      - experimental
+
+    settings:
+      hugeParam:
+        sizeThreshold: 200
+      rangeValCopy:
+        sizeThreshold: 32
+
+  gocyclo:
+    max-complexity: 25
+
+  gofmt:
+    simplify: true
+
+  goimports:
+    local-prefixes: github.com/iagomod/iago
+
+  gomoddirectives:
+    replace-allow-list:
+      - launchpad.net/gocheck
+    retract-allow-no-explanation: false
+    exclude-forbidden: false
+
+  gosec:
+    includes:
+      - G401
+      - G306
+      - G101
+    excludes:
+      - G204
+    exclude-generated: true
+    severity: "low"
+    confidence: "low"
+    config:
+      G306: "0600"
+      G101:
+        pattern: "(?i)example"
+        ignore_entropy: false
+        entropy_threshold: "80.0"
+        per_char_threshold: "3.0"
+        truncate: "32"
+
+  gosimple:
+    go: "1.20"
+    checks: [ "all" ]
+
+  govet:
+    check-shadowing: true
+
+    settings:
+      printf:
+        funcs:
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+
+    enable-all: true
+    disable:
+      - shadow
+      - fieldalignment
+
+  importas:
+    no-unaliased: true
+    alias:
+      - pkg: knative.dev/serving/pkg/apis/serving/v1
+        alias: servingv1
+      - pkg: knative.dev/serving/pkg/apis/autoscaling/v1alpha1
+        alias: autoscalingv1alpha1
+      - pkg: knative.dev/serving/pkg/apis/(\w+)/(v[\w\d]+)
+        alias: $1$2
+
+  lll:
+    line-length: 120
+    tab-width: 1
+
+
+  nestif:
+    min-complexity: 21
+
+  nilnil:
+    checked-types:
+      - ptr
+      - func
+      - iface
+      - map
+      - chan
+
+  revive:
+    ignore-generated-header: true
+    severity: warning
+    rules:
+      - name: indent-error-flow
+        severity: warning
+
+  staticcheck:
+    go: "1.20"
+    checks: [ "all" ]
+
+  stylecheck:
+    go: "1.20"
+    checks: [ "all", "-ST1000", "-ST1018", "-ST1020", "-ST1021", "-ST1022", "-ST1003" ]
+    dot-import-whitelist:
+      - fmt
+    initialisms: [ "ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", "HTTPS", "ID", "IP", "JSON", "QPS", "RAM", "RPC", "SLA", "SMTP", "SQL", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "GID", "UID", "UUID", "URI", "URL", "UTF8", "VM", "XML", "XMPP", "XSRF", "XSS" ]
+    http-status-code-whitelist: [ "200", "400", "404", "500" ]
+
+  varnamelen:
+    max-distance: 5
+    min-name-length: 3
+    check-receiver: false
+    check-return: false
+    ignore-type-assert-ok: true
+    ignore-map-index-ok: true
+    ignore-chan-recv-ok: true
+    ignore-names:
+      - err
+      - i
+      - j
+      - k
+      - ch
+      - ds
+    ignore-decls:
+      - c echo.Context
+      - t testing.T
+      - f *foo.Bar
+      - e error
+      - i int
+
+
+  unused:
+    go: "1.20"
+
+  whitespace:
+    multi-if: false
+    multi-func: false
+
+linters:
+  enable-all: true
+  disable:
+    - exhaustive
+    - maligned
+    - scopelint
+    - interfacer
+    - golint
+    - tagliatelle
+    - ireturn
+    - goimports
+    - exhaustruct
+    - exhaustivestruct
+    - rowserrcheck
+    - sqlclosecheck
+    - structcheck
+    - wastedassign
+    - nolintlint
+    - deadcode
+    - varcheck
+    - ifshort
+    - nosnakecase
+    - nonamedreturns
+    - gochecknoglobals
+    - wrapcheck
+    - gomnd
+    - dupl
+    - funlen
+    - gci
+    - forbidigo
+    - godox
+    - wsl
+    - varnamelen
+    - godot
+    - nlreturn
+    - goerr113
+    - interfacebloat
+    - depguard
+  fast: false
+
+
+severity:
+  default-severity: error
+  case-sensitive: false
+  rules:
+    - linters:
+        - dupl
+      severity: info
